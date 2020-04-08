@@ -575,9 +575,25 @@ ip_handler_ip ip_handler_inst (
 );
 
 // ARP lookup
-wire        axis_arp_lookup_request_TVALID;
-wire        axis_arp_lookup_request_TREADY;
-wire[31:0]  axis_arp_lookup_request_TDATA;
+wire        axis_arp_lookup_request_TVALID0;
+wire        axis_arp_lookup_request_TREADY0;
+wire[31:0]  axis_arp_lookup_request_TDATA0;
+wire        axis_arp_lookup_request_TVALID1;
+wire        axis_arp_lookup_request_TREADY1;
+wire[31:0]  axis_arp_lookup_request_TDATA1;
+
+axis_reg #(.DATA_WIDTH(32)) arp_lookup_request_reg (
+	.clk(net_clk), .rst(!net_aresetn),
+
+	.i_valid(axis_arp_lookup_request_TVALID0),
+	.i_ready(axis_arp_lookup_request_TREADY0),
+	.i_data (axis_arp_lookup_request_TDATA0),
+
+	.o_valid(axis_arp_lookup_request_TVALID1),
+	.o_ready(axis_arp_lookup_request_TREADY1),
+	.o_data (axis_arp_lookup_request_TDATA1)
+);
+
 wire        axis_arp_lookup_reply_TVALID;
 wire        axis_arp_lookup_reply_TREADY;
 wire[55:0]  axis_arp_lookup_reply_TDATA;
@@ -588,9 +604,9 @@ mac_ip_encode_ip mac_ip_encode_inst (
 .m_axis_ip_TDATA(axis_mie_to_intercon.data),
 .m_axis_ip_TKEEP(axis_mie_to_intercon.keep),
 .m_axis_ip_TLAST(axis_mie_to_intercon.last),
-.m_axis_arp_lookup_request_V_V_TVALID(axis_arp_lookup_request_TVALID),
-.m_axis_arp_lookup_request_V_V_TREADY(axis_arp_lookup_request_TREADY),
-.m_axis_arp_lookup_request_V_V_TDATA(axis_arp_lookup_request_TDATA),
+.m_axis_arp_lookup_request_V_V_TVALID(axis_arp_lookup_request_TVALID1),
+.m_axis_arp_lookup_request_V_V_TREADY(axis_arp_lookup_request_TREADY1),
+.m_axis_arp_lookup_request_V_V_TDATA(axis_arp_lookup_request_TDATA1),
 .s_axis_ip_TVALID(axis_intercon_to_mie.valid),
 .s_axis_ip_TREADY(axis_intercon_to_mie.ready),
 .s_axis_ip_TDATA(axis_intercon_to_mie.data),
@@ -1113,9 +1129,9 @@ arp_server_subnet_ip arp_server_inst(
 .s_axis_TDATA(axis_arp_slice_to_arp.data),
 .s_axis_TKEEP(axis_arp_slice_to_arp.keep),
 .s_axis_TLAST(axis_arp_slice_to_arp.last),
-.s_axis_arp_lookup_request_V_V_TVALID(axis_arp_lookup_request_TVALID),
-.s_axis_arp_lookup_request_V_V_TREADY(axis_arp_lookup_request_TREADY),
-.s_axis_arp_lookup_request_V_V_TDATA(axis_arp_lookup_request_TDATA),
+.s_axis_arp_lookup_request_V_V_TVALID(axis_arp_lookup_request_TVALID0),
+.s_axis_arp_lookup_request_V_V_TREADY(axis_arp_lookup_request_TREADY0),
+.s_axis_arp_lookup_request_V_V_TDATA(axis_arp_lookup_request_TDATA0),
 .s_axis_host_arp_lookup_request_V_V_TVALID(axis_host_arp_lookup_request_TVALID),
 .s_axis_host_arp_lookup_request_V_V_TREADY(axis_host_arp_lookup_request_TREADY),
 .s_axis_host_arp_lookup_request_V_V_TDATA(axis_host_arp_lookup_request_TDATA),
